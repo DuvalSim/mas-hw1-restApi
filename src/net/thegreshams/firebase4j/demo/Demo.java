@@ -11,20 +11,22 @@ import net.thegreshams.firebase4j.service.Firebase;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class Demo {
 
-
 	public static void main(String[] args) throws FirebaseException, JsonParseException, JsonMappingException, IOException, JacksonUtilityException {
+		SpringApplication.run(Demo.class, args);
 
-		
 		// get the base-url (ie: 'http://gamma.firebase.com/username')
-		String firebase_baseUrl = null;
+		//String firebase_baseUrl = "https://mas-hw1-default-rtdb.firebaseio.com/users";
 
 		// get the api-key (ie: 'tR7u9Sqt39qQauLzXmRycXag18Z2')
-		String firebase_apiKey = null;
+		//String firebase_apiKey = "AIzaSyAQXySEkoPmkUhXsebjLbRv7Ri9NeS4RWo";
 
-		for( String s : args ) {
+		/*for( String s : args ) {
 
 			if( s == null || s.trim().isEmpty() ) continue;
 			String[] split = s.trim().split( "=" );
@@ -40,13 +42,17 @@ public class Demo {
 		}
 		if( firebase_baseUrl == null || firebase_baseUrl.trim().isEmpty() ) {
 			throw new IllegalArgumentException( "Program-argument 'baseUrl' not found but required" );
-		}
+		}*/
 
-
+		/*
 		// create the firebase
 		Firebase firebase = new Firebase( firebase_baseUrl );
 
-
+		FirebaseResponse response = firebase.get();
+		System.out.println( "\n\nResult of GET ALL :\n" + response );
+		System.out.println("\n");
+		*/
+		/*
 		// "DELETE" (the fb4jDemo-root)
 		FirebaseResponse response = firebase.delete();
 
@@ -118,7 +124,7 @@ public class Demo {
 			System.out.println("\n\nResult of Signing Up:\n failed, because no API Key was provided.");
 			System.out.println("\n");
 		}
-
+	*/
 	}
 	
 }
