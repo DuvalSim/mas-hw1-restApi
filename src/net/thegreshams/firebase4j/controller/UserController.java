@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import net.thegreshams.firebase4j.model.User;
 
@@ -41,13 +42,18 @@ public class UserController {
     public String getUser(@PathVariable String username) throws UnsupportedEncodingException, FirebaseException {
         String usersString = getUsers();
         Gson gson = new Gson();
-
+        System.out.println("Got request");
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<User> userList = gson.fromJson(usersString, ArrayList.class);
 
         for (int i = 0; i < userList.size(); ++i) {
 
             User currentUser = gson.fromJson(String.valueOf(userList.get(i)), (Type) User.class);
-            System.out.println(currentUser.getUsername());
+
             if (currentUser.getUsername().equals(username)) {
                 System.out.println("User Found");
                 return currentUser.toString();
