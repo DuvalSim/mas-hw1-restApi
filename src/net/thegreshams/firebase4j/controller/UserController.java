@@ -1,23 +1,25 @@
 package net.thegreshams.firebase4j.controller;
 
+import com.google.gson.Gson;
 import net.thegreshams.firebase4j.error.FirebaseException;
 import net.thegreshams.firebase4j.error.JacksonUtilityException;
 import net.thegreshams.firebase4j.model.FirebaseResponse;
 import net.thegreshams.firebase4j.service.Firebase;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-@RestController()
+import net.thegreshams.firebase4j.model.User;
+
+@RestController
 @RequestMapping("/users")
 public class UserController {
 
@@ -29,17 +31,29 @@ public class UserController {
     }
 
     @GetMapping()
-    public void getUsers() throws UnsupportedEncodingException, FirebaseException {
+    public String getUsers() throws UnsupportedEncodingException, FirebaseException {
         FirebaseResponse response = firebase.get();
-        System.out.println( "\n\nResult of GET ALL :\n" + response );
-        System.out.println("\n");
+
+        return response.getRawBody();
     }
 
     @GetMapping("/{username}")
-    public void getUser(@PathVariable String username) throws UnsupportedEncodingException, FirebaseException {
-        FirebaseResponse response = firebase.get(username);
-        System.out.println( "\n\nResult of GET user :\n" + response );
-        System.out.println("\n");
+    public String getUser(@PathVariable String username) throws UnsupportedEncodingException, FirebaseException {
+        String usersString = getUsers();
+        Gson gson = new Gson();
+
+        List<User> userList = gson.fromJson(usersString, ArrayList.class);
+
+        for (int i = 0; i < userList.size(); ++i) {
+
+            User currentUser = gson.fromJson(String.valueOf(userList.get(i)), (Type) User.class);
+            System.out.println(currentUser.getUsername());
+            if (currentUser.getUsername().equals(username)) {
+                System.out.println("User Found");
+                return currentUser.toString();
+            }
+        }
+        return "{}";
     }
 
     @PostMapping()
