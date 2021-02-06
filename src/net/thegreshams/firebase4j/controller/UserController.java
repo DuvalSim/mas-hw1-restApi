@@ -22,7 +22,7 @@ import net.thegreshams.firebase4j.model.User;
 @RequestMapping("/users")
 public class UserController {
 
-    String firebase_baseUrl = "https://mas-hw1-default-rtdb.firebaseio.com/users";
+    String firebase_baseUrl = "";
     Firebase firebase = new Firebase( firebase_baseUrl );
 
     public UserController() throws FirebaseException {
